@@ -7,9 +7,7 @@ fbprophet
 yfinance
 plotly
 
-Dataset
-
-fethed the Data from  yfinance
+Dataset: fethed the Data from yahoo using yfinance library
 
 Chose these Stock:
 "AAPL","GOOG","MSTF","BTC-GBP"
@@ -19,6 +17,8 @@ Considered the trend going from "2015-01-01" to the current date
 Used Facebook probhet to create a predictive model! 
 You can play around with the slider and choose you select for how many years you would like to predict the stock trend prediction
 Have a go!
+
+Application Link:https://stockprediction94.herokuapp.com/
 
 I am have been tweeking the app:
 
