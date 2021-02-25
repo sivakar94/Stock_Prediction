@@ -2,14 +2,45 @@ import streamlit as st
 from datetime import date
 
 import yfinance as yf
-from fbprophet import Prophet
-from fbprophet.plot import plot_plotly
+#from fbprophet import Prophet
+#from fbprophet.plot import plot_plotly
 from plotly import graph_objs as go
+
+import tweepy
+import config
+
+auth = tweepy.OAuthHandler(config.TWITTER_CONSUMER_KEY, config.TWITTER_CONSUMER_SECRET)
+auth.set_access_token(config.TWITTER_ACCESS_TOKEN, config.TWITTER_ACCESS_TOKEN_SECRET)
+api = tweepy.API(auth)
 
 START= "2015-01-01"
 TODAY=date.today().strftime("%Y-%m-%d")
 
-st.title("Stock Prediction APP")
+st.title("Stock Prediction Web application")
+
+option= st.sidebar.selectbox("Which Dashboard?",("twitter","Stocks"))
+st.header(option)
+
+if option == 'twitter':
+    for username in config.TWITTER_USERNAMES:
+        user = api.get_user(username)
+        tweets = api.user_timeline(username)
+
+        st.subheader(username)
+        st.image(user.profile_image_url)
+        
+        for tweet in tweets:
+            if '$' in tweet.text:
+                words = tweet.text.split(' ')
+                for word in words:
+                    if word.startswith('$') and word[1:].isalpha():
+                        symbol = word[1:]
+                        st.write(symbol)
+                        st.write(tweet.text)
+                        st.image(f"https://finviz.com/chart.ashx?t={symbol}")
+
+
+
 
 stocks=("AAPL","GOOG","MSTF","BTC-GBP")
 selected_stocks=st.selectbox("Selected stock for prediction",stocks)
@@ -44,6 +75,8 @@ plot_raw_data()
 df_train=data[['Date','Close']]
 df_train=df_train.rename(columns={"Date":"ds", "Close":"y"})
 
+
+'''
 m= Prophet()
 m.fit(df_train)
 future=m.make_future_dataframe(periods=period)
@@ -58,6 +91,6 @@ st.plotly_chart(fig1)
 st.write('forecast components')
 fig2=m.plot_components(forecast)
 st.write(fig2)
-
+'''
 
 
