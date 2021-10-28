@@ -1,5 +1,11 @@
 #requirements.txt
 streamlit
-fbprophet
+#fbprophet
 yfinance
 plotly
+
+#####
+tweepy
+psycopg2
+requests
+pandas
